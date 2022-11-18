@@ -43,12 +43,12 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/passwordTil"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="404dp"
+        android:layout_height="55dp"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView2"
         app:passwordToggleEnabled="true"
-        android:layout_marginLeft="6dp"
         tools:ignore="MissingConstraints">
 
         <EditText
@@ -62,11 +62,12 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/emailTil"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@+id/passwordTil"
+        android:layout_width="397dp"
+        android:layout_height="56dp"
         android:layout_marginTop="370dp"
-        android:layout_marginLeft="6dp"
+        app:layout_constraintBottom_toTopOf="@+id/passwordTil"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <EditText
@@ -83,8 +84,9 @@
         android:layout_height="46dp"
         android:layout_marginTop="32dp"
         android:text="Login"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/passwordTil"
-        tools:layout_editor_absoluteX="39dp"
         tools:ignore="MissingConstraints" />
 
     <TextView
