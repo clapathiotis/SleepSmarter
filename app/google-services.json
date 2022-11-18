@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "246889417371",
+    "firebase_url": "https://sleepsmarter-6f213-default-rtdb.firebaseio.com",
+    "project_id": "sleepsmarter-6f213",
+    "storage_bucket": "sleepsmarter-6f213.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:246889417371:android:065c0507961e21d6ac143e",
+        "android_client_info": {
+          "package_name": "com.USE.sleepsmarter"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "246889417371-fkv6u8iqf56d7nagtkp9ogso8p54rkfl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyByrEyZKZK7Z433Ptq4R0gnO1bllq0V7_I"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "246889417371-fkv6u8iqf56d7nagtkp9ogso8p54rkfl.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
