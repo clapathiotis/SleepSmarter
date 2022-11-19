@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".LoginActivity">
+    tools:context=".Login">
 
     <TextView
         android:id="@+id/titleLabel"
@@ -42,18 +42,19 @@
         app:srcCompat="@drawable/logo_no_bg" />
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/passwordTil"
-        android:layout_width="404dp"
-        android:layout_height="55dp"
+        android:id="@+id/passwordTillogin"
+        android:layout_width="375dp"
+        android:layout_height="56dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView2"
         app:passwordToggleEnabled="true"
         tools:ignore="MissingConstraints">
 
         <EditText
-            android:id="@+id/passwordEt"
-            android:layout_width="397dp"
+            android:id="@+id/passwordEtlogin"
+            android:layout_width="375dp"
             android:layout_height="match_parent"
             android:hint="Password"
             android:inputType="textPassword" />
@@ -61,21 +62,21 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/emailTil"
-        android:layout_width="397dp"
+        android:id="@+id/phoneTilLogin"
+        android:layout_width="375dp"
         android:layout_height="56dp"
         android:layout_marginTop="370dp"
-        app:layout_constraintBottom_toTopOf="@+id/passwordTil"
+        app:layout_constraintBottom_toTopOf="@+id/passwordTillogin"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <EditText
-            android:id="@+id/emailEt"
-            android:layout_width="397dp"
+            android:id="@+id/phoneEtlogin"
+            android:layout_width="375dp"
             android:layout_height="match_parent"
-            android:hint="Email"
-            android:inputType="textEmailAddress" />
+            android:hint="Phone"
+            android:inputType="phone" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <Button
@@ -86,7 +87,7 @@
         android:text="Login"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/passwordTil"
+        app:layout_constraintTop_toBottomOf="@+id/passwordTillogin"
         tools:ignore="MissingConstraints" />
 
     <TextView
@@ -100,6 +101,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>
