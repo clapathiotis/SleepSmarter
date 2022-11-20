@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Settings">
+
+
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/bottom_navigator"
+        app:itemBackground="@color/purple_700"
+        app:itemTextColor="@drawable/selector"
+        app:itemIconTint="@drawable/selector"
+        app:menu="@menu/menu"
+        android:layout_alignParentBottom="true"
+
+        />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/Logoutbtn"
+        android:layout_alignStart="@+id/Logoutbtn"
+        android:layout_alignEnd="@+id/Logoutbtn"
+        android:layout_marginStart="-10dp"
+        android:layout_marginEnd="-42dp"
+        android:layout_marginBottom="334dp"
+        android:text="Settings"
+        android:textSize="30dp" />
+
+    <Button
+        android:id="@+id/Logoutbtn"
+        android:layout_width="113dp"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/bottom_navigator"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="150dp"
+        android:layout_marginEnd="150dp"
+        android:layout_marginBottom="208dp"
+        android:onClick="showAlertDialog"
+        android:text="Logout" />
+
+</RelativeLayout>

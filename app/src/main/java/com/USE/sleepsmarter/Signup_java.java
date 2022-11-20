@@ -46,7 +46,7 @@ public class Signup_java extends AppCompatActivity {
                     dbref.child("users").child(phonetxt).child("Password").setValue(passwordtxt);
 
                     Toast.makeText(Signup_java.this, "Signed up successfully", Toast.LENGTH_SHORT).show();
-                    startActivity(new Intent(Signup_java.this, MainActivity.class));
+                    startActivity(new Intent(Signup_java.this, MySleep.class));
                 }
             }
 

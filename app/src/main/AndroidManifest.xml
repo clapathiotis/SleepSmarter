@@ -12,7 +12,19 @@
         android:theme="@style/Theme.SleepSmarter"
         tools:ignore="ExtraText">
         <activity
-            android:name=".MainActivity"
+            android:name=".Patients"
+            android:exported="false" />
+        <activity
+            android:name=".Inbox"
+            android:exported="false" />
+        <activity
+            android:name=".About"
+            android:exported="false" />
+        <activity
+            android:name=".Settings"
+            android:exported="false" />
+        <activity
+            android:name=".MySleep"
             android:exported="false" />
         <activity
             android:name=".Login"

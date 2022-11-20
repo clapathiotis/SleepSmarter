@@ -3,7 +3,6 @@ package com.USE.sleepsmarter;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -14,8 +13,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -41,7 +38,7 @@ public class Login extends AppCompatActivity {
         logged = shpref.getBoolean(signed_in, false);
         if (logged) {
             Log.d("logged", "val" + logged);
-            startActivity(new Intent(Login.this, MainActivity.class));
+            startActivity(new Intent(Login.this, MySleep.class));
 
         }
 
@@ -65,13 +62,15 @@ public class Login extends AppCompatActivity {
                             if(snapshot.hasChild(phonetxt)) {
                                 final String getpassword = snapshot.child(phonetxt).child("Password").getValue(String.class);
                                 if(getpassword.equals(passwordtxt)) {
+                                    //successfull login
                                     Toast.makeText(Login.this, "Successful Login", Toast.LENGTH_SHORT).show();
+
+                                    //trick only for mockup purposes and mvp to keep being logged in
                                     SharedPreferences shpref = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
                                     SharedPreferences.Editor editor = shpref.edit();
                                     editor.putBoolean(signed_in, true).apply();
                                     boolean val = shpref.getBoolean(signed_in, true);
-                                    Log.d("logged1", "Value " + val );
-                                    startActivity(new Intent(Login.this, MainActivity.class));
+                                    startActivity(new Intent(Login.this, MySleep.class));
                                     finish();
                                 }
                                 else {
