@@ -9,10 +9,11 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="5dp"
         android:text="Patients"
-        android:textSize="30dp"
-        android:layout_centerInParent="true"
-        />
+        android:textStyle="bold"
+        android:textSize="30dp" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:layout_width="match_parent"
@@ -23,6 +24,17 @@
         app:itemIconTint="@drawable/selector"
         app:menu="@menu/menu"
         android:layout_alignParentBottom="true"
+        />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycleviewpatients"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginStart="1dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginBottom="60dp"
+        tools:listitem="@layout/emp_list_item"
+
 
         />
 
