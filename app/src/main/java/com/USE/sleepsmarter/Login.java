@@ -69,7 +69,6 @@ public class Login extends AppCompatActivity {
                                     SharedPreferences shpref = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
                                     SharedPreferences.Editor editor = shpref.edit();
                                     editor.putBoolean(signed_in, true).apply();
-                                    boolean val = shpref.getBoolean(signed_in, true);
                                     startActivity(new Intent(Login.this, MySleep.class));
                                     finish();
                                 }

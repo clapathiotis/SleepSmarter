@@ -34,6 +34,8 @@ public class Settings extends AppCompatActivity {
 
     BottomNavigationView bottomNavigationView;
     public static final String SHARED_PREFS = "sharedPrefs";
+    public static final String doc = "doc";
+    public static String Doctor = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +60,7 @@ public class Settings extends AppCompatActivity {
                 
                 SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
                 String phone = sharedPreferences.getString("phoneval", "");
+
                 //get phone of user (unique) and update doctor
                 dbref.child(phone).updateChildren(hasmap).addOnSuccessListener(new OnSuccessListener() {
                     @Override
@@ -85,6 +88,22 @@ public class Settings extends AppCompatActivity {
         bottomNavigationView = findViewById(R.id.bottom_navigator);
         bottomNavigationView.setSelectedItemId(R.id.settings);
 
+        DatabaseReference dbref = FirebaseDatabase.getInstance().getReferenceFromUrl("https://sleepsmarter-6f213-default-rtdb.firebaseio.com/").child("users");
+        dbref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
+                String phone = sharedPreferences.getString("phoneval", "");
+                Doctor = snapshot.child(phone).child("Personal Doctor").getValue().toString();
+                Log.d("doc", Doctor);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -102,9 +121,14 @@ public class Settings extends AppCompatActivity {
                         overridePendingTransition(0,0);
                         return true;
                     case R.id.patients:
-                        startActivity(new Intent(getApplicationContext(), Patients.class));
-                        overridePendingTransition(0,0);
-                        return true;
+                        if (Doctor.equals("me")) {
+                            startActivity(new Intent(getApplicationContext(), Patients.class));
+                            overridePendingTransition(0,0);
+                            return true;
+                        }
+                        else {
+                            return false;
+                        }
                     case R.id.settings:
                         return true;
                 }

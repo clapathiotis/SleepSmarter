@@ -1,13 +1,22 @@
 package com.USE.sleepsmarter;
 
+import static com.USE.sleepsmarter.Settings.Doctor;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class Inbox extends AppCompatActivity {
 
@@ -35,9 +44,14 @@ public class Inbox extends AppCompatActivity {
                     case R.id.inbox:
                         return true;
                     case R.id.patients:
-                        startActivity(new Intent(getApplicationContext(), Patients.class));
-                        overridePendingTransition(0,0);
-                        return true;
+                        if (Doctor.equals("me")) {
+                            startActivity(new Intent(getApplicationContext(), Patients.class));
+                            overridePendingTransition(0,0);
+                            return true;
+                        }
+                        else {
+                            return false;
+                        }
                     case R.id.settings:
                         startActivity(new Intent(getApplicationContext(), Settings.class));
                         overridePendingTransition(0,0);

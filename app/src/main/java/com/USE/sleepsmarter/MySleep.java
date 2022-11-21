@@ -1,5 +1,7 @@
 package com.USE.sleepsmarter;
 
+import static com.USE.sleepsmarter.Settings.Doctor;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -39,9 +41,14 @@ public class MySleep extends AppCompatActivity {
                         overridePendingTransition(0,0);
                         return true;
                     case R.id.patients:
-                        startActivity(new Intent(getApplicationContext(), Patients.class));
-                        overridePendingTransition(0,0);
-                        return true;
+                        if (Doctor.equals("me")) {
+                            startActivity(new Intent(getApplicationContext(), Patients.class));
+                            overridePendingTransition(0,0);
+                            return true;
+                        }
+                        else {
+                            return false;
+                        }
                     case R.id.settings:
                         startActivity(new Intent(getApplicationContext(), Settings.class));
                         overridePendingTransition(0,0);
