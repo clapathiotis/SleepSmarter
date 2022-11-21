@@ -46,4 +46,29 @@
         android:onClick="showAlertDialog"
         android:text="Logout" />
 
+    <Button
+        android:id="@+id/removegpBtn"
+        android:layout_width="309dp"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/Logoutbtn"
+        android:layout_alignStart="@+id/Logoutbtn"
+        android:layout_alignEnd="@+id/Logoutbtn"
+        android:layout_marginStart="-95dp"
+        android:layout_marginEnd="-103dp"
+        android:layout_marginBottom="41dp"
+        android:text="Remove my data from my GP" />
+
+    <Button
+        android:id="@+id/updatedpBtn"
+        android:layout_width="196dp"
+        android:layout_height="40dp"
+        android:layout_above="@+id/removegpBtn"
+        android:layout_alignStart="@+id/removegpBtn"
+        android:layout_alignEnd="@+id/removegpBtn"
+        android:layout_marginStart="51dp"
+        android:layout_marginEnd="61dp"
+        android:layout_marginBottom="25dp"
+        android:text="Update my gp" />
+
+
 </RelativeLayout>
