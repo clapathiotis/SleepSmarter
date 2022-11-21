@@ -6,9 +6,9 @@ public class Patient {
     Integer maxrate;
     Integer Phone;
 
-    public Integer getPhone() {
-        return Phone;
-    }
+    //public Integer getPhone() {
+       // return Phone;
+   // }
 
     public String getFullName() {
         return FullName;
