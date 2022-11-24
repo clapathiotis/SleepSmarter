@@ -34,7 +34,6 @@ public class Settings extends AppCompatActivity {
 
     BottomNavigationView bottomNavigationView;
     public static final String SHARED_PREFS = "sharedPrefs";
-    public static final String doc = "doc";
     public static String Doctor = "";
 
     @Override
@@ -55,7 +54,7 @@ public class Settings extends AppCompatActivity {
                 String txt = input.getText().toString();
                 //Log.d("gp", "val + " + txt); works
                 HashMap hasmap = new HashMap();
-                hasmap.put("Personal Doctor", txt);
+                hasmap.put("Personal_Doctor", txt);
                 DatabaseReference dbref = FirebaseDatabase.getInstance().getReferenceFromUrl("https://sleepsmarter-6f213-default-rtdb.firebaseio.com/").child("users");
                 
                 SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
@@ -94,8 +93,9 @@ public class Settings extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
                 String phone = sharedPreferences.getString("phoneval", "");
-                Doctor = snapshot.child(phone).child("Personal Doctor").getValue().toString();
+                Doctor = snapshot.child(phone).child("Personal_Doctor").getValue().toString();
                 Log.d("doc", Doctor);
+                Log.d("phopho", "");
             }
 
             @Override
@@ -163,25 +163,25 @@ public class Settings extends AppCompatActivity {
         });
 
         //Remove doctor from being able to see patients data
-        Button removegpBtn = findViewById(R.id.removegpBtn);
-        removegpBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //remove doctor from DB
-                HashMap hasmap = new HashMap();
-                hasmap.put("Personal Doctor", null);
-                DatabaseReference dbref = FirebaseDatabase.getInstance().getReferenceFromUrl("https://sleepsmarter-6f213-default-rtdb.firebaseio.com/").child("users");
-
-                SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
-                String phone = sharedPreferences.getString("phoneval", "");
-                //get phone of user (unique) and update doctor
-                dbref.child(phone).updateChildren(hasmap).addOnSuccessListener(new OnSuccessListener() {
-                    @Override
-                    public void onSuccess(Object o) {
-                        Toast.makeText(Settings.this, "GP removed", Toast.LENGTH_SHORT).show();
-                    }
-                });
-            }
-        });
+//        Button removegpBtn = findViewById(R.id.removegpBtn);
+//        removegpBtn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                //remove doctor from DB
+//                HashMap hasmap = new HashMap();
+//                hasmap.put("Personal Doctor", null);
+//                DatabaseReference dbref = FirebaseDatabase.getInstance().getReferenceFromUrl("https://sleepsmarter-6f213-default-rtdb.firebaseio.com/").child("users");
+//
+//                SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
+//                String phone = sharedPreferences.getString("phoneval", "");
+//                //get phone of user (unique) and update doctor
+//                dbref.child(phone).updateChildren(hasmap).addOnSuccessListener(new OnSuccessListener() {
+//                    @Override
+//                    public void onSuccess(Object o) {
+//                        Toast.makeText(Settings.this, "GP removed", Toast.LENGTH_SHORT).show();
+//                    }
+//                });
+//            }
+//        });
     }
 }

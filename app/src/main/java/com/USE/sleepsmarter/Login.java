@@ -24,6 +24,7 @@ public class Login extends AppCompatActivity {
     DatabaseReference dbref = FirebaseDatabase.getInstance().getReferenceFromUrl("https://sleepsmarter-6f213-default-rtdb.firebaseio.com/");
     public static final String SHARED_PREFS = "sharedPrefs";
     public static final String signed_in = "signed_in" ;
+    public static final String phoneval = "phoneval";
     private boolean logged;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +50,10 @@ public class Login extends AppCompatActivity {
                 final String phonetxt = phone.getText().toString();
                 final String passwordtxt = password.getText().toString();
 
+                SharedPreferences shpref = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
+                SharedPreferences.Editor editor = shpref.edit();
+                editor.putString(phoneval, phonetxt).apply();
+
                 if (phonetxt.isEmpty() || passwordtxt.isEmpty()) {
                     Toast.makeText(Login.this, "Please enter your name and password,",
                             Toast.LENGTH_SHORT).show();
@@ -69,6 +74,7 @@ public class Login extends AppCompatActivity {
                                     SharedPreferences shpref = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
                                     SharedPreferences.Editor editor = shpref.edit();
                                     editor.putBoolean(signed_in, true).apply();
+                                    editor.putString(phonetxt, "");
                                     startActivity(new Intent(Login.this, MySleep.class));
                                     finish();
                                 }

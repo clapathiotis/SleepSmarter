@@ -1,5 +1,7 @@
 package com.USE.sleepsmarter;
 
+import static com.USE.sleepsmarter.Settings.Doctor;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -7,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -76,9 +79,15 @@ public class Patients extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     Patient patient = dataSnapshot.getValue(Patient.class);
-                    list.add(patient);
+                    Log.d("doc1", patient.getPersonal_Doctor());
+                    if (patient.getPersonal_Doctor() != "me") {
+                        Log.d("doc1", patient.getPersonal_Doctor());
+                        list.add(patient);
+                        adapter.notifyDataSetChanged();
+                    }
+
                 }
-                adapter.notifyDataSetChanged();
+
             }
 
             @Override

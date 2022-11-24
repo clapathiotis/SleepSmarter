@@ -49,7 +49,7 @@ public class Signup_java extends AppCompatActivity {
                     SharedPreferences.Editor editor = shpref.edit();
                     editor.putString(phoneval, phonetxt).apply();
                     dbref.child("users").child(phonetxt).child("FullName").setValue(nametxt);
-                    dbref.child("users").child(phonetxt).child("Personal Doctor").setValue(PDtxt);
+                    dbref.child("users").child(phonetxt).child("Personal_Doctor").setValue(PDtxt);
                     dbref.child("users").child(phonetxt).child("Password").setValue(passwordtxt);
                     dbref.child("users").child(phonetxt).child("Phone").setValue(phonetxt);
 
