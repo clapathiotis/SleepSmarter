@@ -78,13 +78,10 @@ public class Patients extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                    //Add patients to the recyclerview list to be displayed
                     Patient patient = dataSnapshot.getValue(Patient.class);
-                    Log.d("doc1", patient.getPersonal_Doctor());
-                    if (patient.getPersonal_Doctor() != "me") {
-                        Log.d("doc1", patient.getPersonal_Doctor());
-                        list.add(patient);
-                        adapter.notifyDataSetChanged();
-                    }
+                    list.add(patient);
+                    adapter.notifyDataSetChanged();
 
                 }
 

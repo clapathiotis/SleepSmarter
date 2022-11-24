@@ -1,6 +1,7 @@
 package com.USE.sleepsmarter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,8 +33,10 @@ public class PatientAdapter extends RecyclerView.Adapter<PatientAdapter.MyViewHo
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         Patient patient = list.get(position);
-        holder.fullname .setText(patient.getFullName());
-        //holder.maxheartrate .setText(patient.getMaxHeartrate());
+        holder.fullname.setText(patient.getFullName());
+        Log.d("aaaa", patient.getmaxRate());
+        holder.maxheartrate.setText(patient.getmaxRate());
+        holder.lowheartrate.setText(patient.getlowRate());
     }
 
     @Override
@@ -43,13 +46,14 @@ public class PatientAdapter extends RecyclerView.Adapter<PatientAdapter.MyViewHo
 
     public class MyViewHolder extends RecyclerView.ViewHolder{
 
-        TextView fullname, maxheartrate;
+        TextView fullname, maxheartrate, lowheartrate;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
 
             fullname = itemView.findViewById(R.id.tvFullname);
-            //maxheartrate = itemView.findViewById(R.id.tvMaxHeartRate);
+            maxheartrate = itemView.findViewById(R.id.tvMaxHeartRate);
+            lowheartrate = itemView.findViewById(R.id.tvMLowHeartRate);
         }
     }
 }

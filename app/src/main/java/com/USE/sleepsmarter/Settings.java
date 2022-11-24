@@ -94,8 +94,6 @@ public class Settings extends AppCompatActivity {
                 SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
                 String phone = sharedPreferences.getString("phoneval", "");
                 Doctor = snapshot.child(phone).child("Personal_Doctor").getValue().toString();
-                Log.d("doc", Doctor);
-                Log.d("phopho", "");
             }
 
             @Override
