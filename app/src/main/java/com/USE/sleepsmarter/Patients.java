@@ -1,16 +1,24 @@
 package com.USE.sleepsmarter;
 
+import static com.USE.sleepsmarter.Login.signed_in;
 import static com.USE.sleepsmarter.Settings.Doctor;
+import static com.USE.sleepsmarter.Settings.SHARED_PREFS;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.database.DataSnapshot;
@@ -29,6 +37,7 @@ public class Patients extends AppCompatActivity {
     DatabaseReference databaseReference;
     PatientAdapter adapter;
     ArrayList<Patient> list;
+    public static String patient_selected = "patient_selected";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,5 +102,29 @@ public class Patients extends AppCompatActivity {
             }
         });
 
+        //Selection observer from our intent
+        LocalBroadcastManager.getInstance(this).registerReceiver(mMessageReceiver,
+                new IntentFilter("patient_selected"));
+
     }
+
+    //Observe selection of patient
+    public BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            // Get extra data included in the Intent
+            String patient = intent.getStringExtra("patient");
+            Toast.makeText(Patients.this,"Patient Selected: "+patient ,Toast.LENGTH_SHORT).show();
+            SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putString(patient_selected, patient).apply();
+
+            //Move to patients data graph activity
+            Intent i = new Intent();
+            i.setClassName("com.USE.sleepsmarter", "com.USE.sleepsmarter.MySleep");
+            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            context.startActivity(i);
+        }
+    };
+
 }

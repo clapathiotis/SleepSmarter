@@ -150,7 +150,6 @@ public class Settings extends AppCompatActivity {
                                 SharedPreferences shpref = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
                                 SharedPreferences.Editor editor = shpref.edit();
                                 editor.putBoolean(signed_in, false).apply();
-                                boolean val = shpref.getBoolean(signed_in, false);
 
                                 startActivity(new Intent(Settings.this, Login.class));
                             }

@@ -1,12 +1,15 @@
 package com.USE.sleepsmarter;
 
 import static com.USE.sleepsmarter.Settings.Doctor;
+import static com.USE.sleepsmarter.Settings.SHARED_PREFS;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -57,7 +60,10 @@ public class MySleep extends AppCompatActivity {
                 return false;
             }
         });
+        SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
+        String name = sharedPreferences.getString("patient_selected", "");
 
+        Log.d("name1", name);
     }
 
 

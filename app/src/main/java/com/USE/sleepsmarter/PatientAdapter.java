@@ -1,6 +1,8 @@
 package com.USE.sleepsmarter;
 
 import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
@@ -34,7 +37,6 @@ public class PatientAdapter extends RecyclerView.Adapter<PatientAdapter.MyViewHo
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         Patient patient = list.get(position);
         holder.fullname.setText(patient.getFullName());
-        Log.d("aaaa", patient.getmaxRate());
         holder.maxheartrate.setText(patient.getmaxRate());
         holder.lowheartrate.setText(patient.getlowRate());
     }
@@ -54,6 +56,16 @@ public class PatientAdapter extends RecyclerView.Adapter<PatientAdapter.MyViewHo
             fullname = itemView.findViewById(R.id.tvFullname);
             maxheartrate = itemView.findViewById(R.id.tvMaxHeartRate);
             lowheartrate = itemView.findViewById(R.id.tvMLowHeartRate);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    String patient = fullname.getText().toString().trim();
+                    Intent intent = new Intent("patient_selected");
+                    intent.putExtra("patient",patient);
+                    LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
+                }
+            });
         }
     }
 }
