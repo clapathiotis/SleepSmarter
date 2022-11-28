@@ -13,17 +13,20 @@ import android.util.Log;
 import android.view.MenuItem;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.ktx.Firebase;
+
+import java.util.ArrayList;
 
 public class MySleep extends AppCompatActivity {
     public String phone;
+    String[] dummydata = {"60", "65", "80", "75"};
+    public static String patient_num = "patient_num";
+
+    ArrayList<HeartrateData> arrayList;
 
 
     BottomNavigationView bottomNavigationView;
@@ -32,6 +35,8 @@ public class MySleep extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        arrayList = new ArrayList<HeartrateData>();
 
         bottomNavigationView = findViewById(R.id.bottom_navigator);
         bottomNavigationView.setSelectedItemId(R.id.mysleep);
@@ -44,24 +49,23 @@ public class MySleep extends AppCompatActivity {
                         return true;
                     case R.id.about:
                         startActivity(new Intent(getApplicationContext(), About.class));
-                        overridePendingTransition(0,0);
+                        overridePendingTransition(0, 0);
                         return true;
                     case R.id.inbox:
                         startActivity(new Intent(getApplicationContext(), Inbox.class));
-                        overridePendingTransition(0,0);
+                        overridePendingTransition(0, 0);
                         return true;
                     case R.id.patients:
                         if (Doctor.equals("me")) {
                             startActivity(new Intent(getApplicationContext(), Patients.class));
-                            overridePendingTransition(0,0);
+                            overridePendingTransition(0, 0);
                             return true;
-                        }
-                        else {
+                        } else {
                             return false;
                         }
                     case R.id.settings:
                         startActivity(new Intent(getApplicationContext(), Settings.class));
-                        overridePendingTransition(0,0);
+                        overridePendingTransition(0, 0);
                         return true;
                 }
                 return false;
@@ -81,8 +85,9 @@ public class MySleep extends AppCompatActivity {
                     //Successfully getting patients phone (Unique ID)
                     //to help us fetch the graph data
                     phone = data.child("Phone").getValue(String.class);
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.putString(patient_num, phone).apply();
                 }
-
             }
 
             @Override
@@ -90,6 +95,17 @@ public class MySleep extends AppCompatActivity {
 
             }
         });
+
+        //Fetch users data
+        String phone = sharedPreferences.getString(patient_num, "");
+        int i = 0;
+        while (i < dummydata.length) {
+            HeartrateData heartrateData = new HeartrateData(dummydata[i]);
+            arrayList.add(heartrateData);
+            i++;
+        }
+        rootRef.child("users").child(phone).child("HeartrateList").setValue(arrayList);
+
     }
 
 

@@ -8,9 +8,9 @@ public class Patient {
     String Phone;
     String Personal_Doctor;
 
-    //public Integer getPhone() {
-       // return Phone;
-   // }
+//    public String getPhone() {
+//        return Phone;
+//    }
 
 //    public String getPersonal_Doctor() {
 //        return Personal_Doctor;
