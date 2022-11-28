@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.MenuItem;
 
@@ -19,6 +20,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class MySleep extends AppCompatActivity {
@@ -97,7 +99,28 @@ public class MySleep extends AppCompatActivity {
         });
 
         //Fetch users data
+        ArrayList<Integer> x_axis = new ArrayList<>();
+        ArrayList<Integer> y_axis = new ArrayList<>();
         String phone = sharedPreferences.getString(patient_num, "");
+        rootRef.child("users").child(phone).child("HeartrateList").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for(DataSnapshot childDataSnapshot : snapshot.getChildren()) {
+                    x_axis.add(Integer.parseInt(childDataSnapshot.getKey()));
+                    y_axis.add(Integer.parseInt((String) childDataSnapshot.child("heartrate").getValue()));
+
+                    Log.d("child", "" + x_axis);
+                    Log.d("childd", ""+ y_axis);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+        //add dummy data
         int i = 0;
         while (i < dummydata.length) {
             HeartrateData heartrateData = new HeartrateData(dummydata[i]);
