@@ -9,10 +9,16 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.MenuItem;
 
+import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -20,8 +26,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.lang.reflect.Array;
+import java.sql.Array;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 public class MySleep extends AppCompatActivity {
     public String phone;
@@ -108,10 +117,8 @@ public class MySleep extends AppCompatActivity {
                 for(DataSnapshot childDataSnapshot : snapshot.getChildren()) {
                     x_axis.add(Integer.parseInt(childDataSnapshot.getKey()));
                     y_axis.add(Integer.parseInt((String) childDataSnapshot.child("heartrate").getValue()));
-
-                    Log.d("child", "" + x_axis);
-                    Log.d("childd", ""+ y_axis);
                 }
+
             }
 
             @Override
@@ -119,15 +126,62 @@ public class MySleep extends AppCompatActivity {
 
             }
         });
+        Handler handler = new Handler();
+        int delay = 1000;
 
-        //add dummy data
-        int i = 0;
-        while (i < dummydata.length) {
-            HeartrateData heartrateData = new HeartrateData(dummydata[i]);
-            arrayList.add(heartrateData);
-            i++;
-        }
-        rootRef.child("users").child(phone).child("HeartrateList").setValue(arrayList);
+        handler.postDelayed(new Runnable(){
+            public void run(){
+                if(!x_axis.isEmpty() && !y_axis.isEmpty())//checking if the data is loaded or not
+                {
+                    //Graph is being generated here
+                   ArrayList<Entry> data = new ArrayList<>();
+
+                   //Transform data into Entries so we can use MPAndroid for graphing
+                   for (int j=0; j<y_axis.size(); j++) {
+                       data.add(new Entry(j, (float) y_axis.get(j)));
+                   }
+
+                    LineChart mpLineChart;
+                    mpLineChart = findViewById(R.id.line_chart);
+                    LineDataSet lineDataSetHeartrate = new LineDataSet(data, "Heartrate Data");
+                    lineDataSetHeartrate.setLineWidth(5);
+                    lineDataSetHeartrate.setCircleRadius(3);
+                    lineDataSetHeartrate.setCircleHoleRadius(4);
+                    lineDataSetHeartrate.setMode(LineDataSet.Mode.CUBIC_BEZIER);
+
+                    //use them to update text below graph and at patients tab
+                    String max =  String.valueOf(lineDataSetHeartrate.getYMax());
+                    String min = String.valueOf(lineDataSetHeartrate.getYMin());
+
+                    ArrayList<ILineDataSet> dataSets = new ArrayList<>();
+                    dataSets.add(lineDataSetHeartrate);
+
+                    LineData lineData = new LineData(dataSets);
+                    mpLineChart.setData(lineData);
+                    mpLineChart.invalidate();
+
+                    //Update min/max values, send them to firebase
+                    rootRef.child("users").child(phone).child("lowrate").setValue(min);
+                    rootRef.child("users").child(phone).child("maxrate").setValue(max);
+
+
+
+                }
+                else
+                    handler.postDelayed(this, delay);
+            }
+        }, delay);
+
+        //add dummy data -- DELETE LATER
+//        int i = 0;
+//        while (i < dummydata.length) {
+//            HeartrateData heartrateData = new HeartrateData(dummydata[i]);
+//            arrayList.add(heartrateData);
+//            i++;
+//        }
+//        rootRef.child("users").child(phone).child("HeartrateList").setValue(arrayList);
+        // DELETE TILL HERE
+
 
     }
 
