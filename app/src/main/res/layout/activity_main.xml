@@ -7,10 +7,15 @@
     tools:context=".MySleep">
 
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:gravity="center"
         android:text="Sleep Analysis"
-        android:gravity="center_horizontal"
+        android:shadowColor="@color/text_shadow"
+        android:shadowDx="1"
+        android:shadowDy="2"
+        android:shadowRadius="4"
         android:textSize="30dp" />
 
     <com.github.mikephil.charting.charts.LineChart
@@ -29,8 +34,67 @@
         app:itemIconTint="@drawable/selector"
         app:menu="@menu/menu"
         android:layout_alignParentBottom="true"
-
         />
+
+    <TextView
+        android:id="@+id/tvMaxAtMySleep"
+        android:layout_width="143dp"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/bottom_navigator"
+        android:layout_alignStart="@+id/tvMaxToUpdate"
+        android:layout_marginStart="-60dp"
+        android:layout_marginBottom="167dp"
+        android:text="Max Heartrate"
+        android:textSize="20dp"
+        android:shadowColor="@color/text_shadow"
+        android:shadowDx="1"
+        android:shadowDy="1.5"
+        android:shadowRadius="3"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/tvLowAtMySleep"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/bottom_navigator"
+        android:layout_alignEnd="@+id/tvLowToUpdate"
+        android:layout_marginEnd="-67dp"
+        android:layout_marginBottom="167dp"
+        android:text="Lowest Heartrate"
+        android:textSize="20dp"
+        android:shadowColor="@color/text_shadow"
+        android:shadowDx="1"
+        android:shadowDy="1.5"
+        android:shadowRadius="3"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/tvLowToUpdate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/bottom_navigator"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="104dp"
+        android:layout_marginBottom="99dp"
+        android:shadowColor="@color/text_shadow"
+        android:shadowDx="1"
+        android:shadowDy="1"
+        android:shadowRadius="10"
+        android:text="Low" />
+
+    <TextView
+        android:id="@+id/tvMaxToUpdate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/bottom_navigator"
+        android:layout_marginEnd="169dp"
+        android:layout_marginBottom="98dp"
+        android:layout_toStartOf="@+id/tvLowToUpdate"
+        android:shadowColor="@color/text_shadow"
+        android:shadowDx="1"
+        android:shadowDy="1"
+        android:shadowRadius="10"
+        android:text="Max" />
 
 
 </RelativeLayout>

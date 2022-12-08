@@ -5,6 +5,7 @@ import static com.USE.sleepsmarter.Settings.SHARED_PREFS;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -13,6 +14,7 @@ import android.os.Handler;
 import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.data.Entry;
@@ -129,6 +131,10 @@ public class MySleep extends AppCompatActivity {
         Handler handler = new Handler();
         int delay = 1000;
 
+        TextView maxrate, lowrate;
+        maxrate = findViewById(R.id.tvMaxToUpdate);
+        lowrate = findViewById(R.id.tvLowToUpdate);
+
         handler.postDelayed(new Runnable(){
             public void run(){
                 if(!x_axis.isEmpty() && !y_axis.isEmpty())//checking if the data is loaded or not
@@ -152,6 +158,8 @@ public class MySleep extends AppCompatActivity {
                     //use them to update text below graph and at patients tab
                     String max =  String.valueOf(lineDataSetHeartrate.getYMax());
                     String min = String.valueOf(lineDataSetHeartrate.getYMin());
+                    maxrate.setText(max);
+                    lowrate.setText(min);
 
                     ArrayList<ILineDataSet> dataSets = new ArrayList<>();
                     dataSets.add(lineDataSetHeartrate);
