@@ -29,6 +29,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.sql.Array;
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -36,10 +37,13 @@ import java.util.Set;
 
 public class MySleep extends AppCompatActivity {
     public String phone;
-    String[] dummydata = {"60", "65", "80", "75"};
+//    String[][] dummydata = {{"60", "65", "80", "75"}, {"10:00", "10:01", "10:02", "10:03"}};
+//    String[] dummydata = {"40", "44", "32", "88"};
+//    String[] timedummydata = {"10:00", "10:01", "10:02","10:03"};
     public static String patient_num = "patient_num";
 
     ArrayList<HeartrateData> arrayList;
+    ArrayList<TimeStamps> timeList;
 
 
     BottomNavigationView bottomNavigationView;
@@ -50,6 +54,7 @@ public class MySleep extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         arrayList = new ArrayList<HeartrateData>();
+        timeList = new ArrayList<TimeStamps>();
 
         bottomNavigationView = findViewById(R.id.bottom_navigator);
         bottomNavigationView.setSelectedItemId(R.id.mysleep);
@@ -117,7 +122,7 @@ public class MySleep extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for(DataSnapshot childDataSnapshot : snapshot.getChildren()) {
-                    x_axis.add(Integer.parseInt(childDataSnapshot.getKey()));
+                    // Fetching only y_axis for heartrate graph
                     y_axis.add(Integer.parseInt((String) childDataSnapshot.child("heartrate").getValue()));
                 }
 
@@ -128,6 +133,45 @@ public class MySleep extends AppCompatActivity {
 
             }
         });
+        rootRef.child("users").child(phone).child("TimestampList").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for(DataSnapshot childDataSnapshot : snapshot.getChildren()) {
+                    // Fetching only x_axis timestamps for all graphs
+                    x_axis.add(Integer.parseInt((String) childDataSnapshot.child("timestamp").getValue()));
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+        ArrayList<Integer> test_axis = new ArrayList<>();
+
+        //TESTING FETCHING FROM ARDUINO -- DELETE LATER
+//        rootRef.child("users").child("12").child("TimeStamp").addListenerForSingleValueEvent(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                for(DataSnapshot childDataSnapshot : snapshot.getChildren()) {
+//                    String key = childDataSnapshot.getKey();
+//                    Log.d("test:::::::  ", key);
+//                    test_axis.add( Integer.parseInt( (String) childDataSnapshot.getValue()));
+////                    y_axis.add(Integer.parseInt((String) childDataSnapshot.child("heartrate").getValue()));
+////                    Log.d("here ", "key: " + key + "test: " + test_axis   );
+//                }
+//
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError error) {
+//
+//            }
+//        });
+        // DELETE ENDS HERE
+
+
         Handler handler = new Handler();
         int delay = 1000;
 
@@ -144,7 +188,7 @@ public class MySleep extends AppCompatActivity {
 
                    //Transform data into Entries so we can use MPAndroid for graphing
                    for (int j=0; j<y_axis.size(); j++) {
-                       data.add(new Entry(j, (float) y_axis.get(j)));
+                       data.add(new Entry((float) x_axis.get(j), (float) y_axis.get(j)));
                    }
 
                     LineChart mpLineChart;
@@ -188,7 +232,15 @@ public class MySleep extends AppCompatActivity {
 //            i++;
 //        }
 //        rootRef.child("users").child(phone).child("HeartrateList").setValue(arrayList);
-        // DELETE TILL HERE
+//        //Now for timestamps
+//        i = 0;
+//        while (i < timedummydata.length) {
+//            TimeStamps timeStamps = new TimeStamps(timedummydata[i]);
+//            timeList.add(timeStamps);
+//            i++;
+//        }
+//        rootRef.child("users").child(phone).child("TimestampList").setValue(timeList);
+//        // DELETE TILL HERE
 
 
     }
