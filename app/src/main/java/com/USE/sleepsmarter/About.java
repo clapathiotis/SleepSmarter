@@ -10,6 +10,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.database.DataSnapshot;
@@ -39,10 +40,6 @@ public class About extends AppCompatActivity {
                         return true;
                     case R.id.about:
                         return true;
-                    case R.id.inbox:
-                        startActivity(new Intent(getApplicationContext(), Inbox.class));
-                        overridePendingTransition(0,0);
-                        return true;
                     case R.id.patients:
                         if (Doctor.equals("me")) {
                             startActivity(new Intent(getApplicationContext(), Patients.class));
@@ -50,6 +47,7 @@ public class About extends AppCompatActivity {
                             return true;
                         }
                         else {
+                            Toast.makeText(About.this, "Only Doctors can access this", Toast.LENGTH_SHORT).show();
                             return false;
                         }
                     case R.id.settings:

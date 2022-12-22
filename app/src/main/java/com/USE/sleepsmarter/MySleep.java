@@ -15,6 +15,7 @@ import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.MenuItem;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.data.Entry;
@@ -53,6 +54,22 @@ public class MySleep extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        DatabaseReference dbref = FirebaseDatabase.getInstance().getReferenceFromUrl("https://sleepsmarter-6f213-default-rtdb.firebaseio.com/").child("users");
+        dbref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
+                String phone = sharedPreferences.getString("phoneval", "");
+                Doctor = snapshot.child(phone).child("Personal_Doctor").getValue().toString();
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
         arrayList = new ArrayList<HeartrateData>();
         timeList = new ArrayList<TimeStamps>();
 
@@ -69,16 +86,13 @@ public class MySleep extends AppCompatActivity {
                         startActivity(new Intent(getApplicationContext(), About.class));
                         overridePendingTransition(0, 0);
                         return true;
-                    case R.id.inbox:
-                        startActivity(new Intent(getApplicationContext(), Inbox.class));
-                        overridePendingTransition(0, 0);
-                        return true;
                     case R.id.patients:
                         if (Doctor.equals("me")) {
                             startActivity(new Intent(getApplicationContext(), Patients.class));
                             overridePendingTransition(0, 0);
                             return true;
                         } else {
+                            Toast.makeText(getBaseContext(), "Only Doctors can access this", Toast.LENGTH_SHORT).show();
                             return false;
                         }
                     case R.id.settings:
@@ -93,7 +107,7 @@ public class MySleep extends AppCompatActivity {
         String name = sharedPreferences.getString("patient_selected", "");
 
         DatabaseReference rootRef = FirebaseDatabase.getInstance().getReferenceFromUrl("https://sleepsmarter-6f213-default-rtdb.firebaseio.com/");
-
+//
         //Finding the SleepSmarter User from the database that was selected.
         rootRef.child("users").orderByChild("FullName").equalTo(name).addValueEventListener(new ValueEventListener() {
             @Override

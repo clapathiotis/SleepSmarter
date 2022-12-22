@@ -15,9 +15,6 @@
             android:name=".Patients"
             android:exported="false" />
         <activity
-            android:name=".Inbox"
-            android:exported="false" />
-        <activity
             android:name=".About"
             android:exported="false" />
         <activity

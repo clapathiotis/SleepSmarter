@@ -87,20 +87,6 @@ public class Settings extends AppCompatActivity {
         bottomNavigationView = findViewById(R.id.bottom_navigator);
         bottomNavigationView.setSelectedItemId(R.id.settings);
 
-        DatabaseReference dbref = FirebaseDatabase.getInstance().getReferenceFromUrl("https://sleepsmarter-6f213-default-rtdb.firebaseio.com/").child("users");
-        dbref.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
-                String phone = sharedPreferences.getString("phoneval", "");
-                Doctor = snapshot.child(phone).child("Personal_Doctor").getValue().toString();
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
 
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -114,10 +100,6 @@ public class Settings extends AppCompatActivity {
                         startActivity(new Intent(getApplicationContext(), About.class));
                         overridePendingTransition(0,0);
                         return true;
-                    case R.id.inbox:
-                        startActivity(new Intent(getApplicationContext(), Inbox.class));
-                        overridePendingTransition(0,0);
-                        return true;
                     case R.id.patients:
                         if (Doctor.equals("me")) {
                             startActivity(new Intent(getApplicationContext(), Patients.class));
@@ -125,6 +107,7 @@ public class Settings extends AppCompatActivity {
                             return true;
                         }
                         else {
+                            Toast.makeText(Settings.this, "Only Doctors can access this", Toast.LENGTH_SHORT).show();
                             return false;
                         }
                     case R.id.settings:

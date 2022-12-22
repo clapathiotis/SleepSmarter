@@ -1,5 +1,7 @@
 package com.USE.sleepsmarter;
 
+import static com.USE.sleepsmarter.MySleep.patient_num;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -38,7 +40,7 @@ public class Login extends AppCompatActivity {
         SharedPreferences shpref = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
         logged = shpref.getBoolean(signed_in, false);
         if (logged) {
-            Log.d("logged", "val" + logged);
+            //Check if user is logged in from before
             startActivity(new Intent(Login.this, MySleep.class));
 
         }
@@ -53,6 +55,8 @@ public class Login extends AppCompatActivity {
                 SharedPreferences shpref = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
                 SharedPreferences.Editor editor = shpref.edit();
                 editor.putString(phoneval, phonetxt).apply();
+                editor.putString(patient_num, phonetxt).apply();
+
 
                 if (phonetxt.isEmpty() || passwordtxt.isEmpty()) {
                     Toast.makeText(Login.this, "Please enter your name and password,",
@@ -75,6 +79,8 @@ public class Login extends AppCompatActivity {
                                     SharedPreferences.Editor editor = shpref.edit();
                                     editor.putBoolean(signed_in, true).apply();
                                     editor.putString(phonetxt, "");
+                                    editor.putString(patient_num, phonetxt).apply();
+
                                     startActivity(new Intent(Login.this, MySleep.class));
                                     finish();
                                 }
