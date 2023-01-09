@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.ContactsContract;
@@ -18,6 +19,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
@@ -38,9 +41,6 @@ import java.util.Set;
 
 public class MySleep extends AppCompatActivity {
     public String phone;
-//    String[][] dummydata = {{"60", "65", "80", "75"}, {"10:00", "10:01", "10:02", "10:03"}};
-//    String[] dummydata = {"40", "44", "32", "88"};
-//    String[] timedummydata = {"10:00", "10:01", "10:02","10:03"};
     public static String patient_num = "patient_num";
 
     ArrayList<HeartrateData> arrayList;
@@ -107,7 +107,7 @@ public class MySleep extends AppCompatActivity {
         String name = sharedPreferences.getString("patient_selected", "");
 
         DatabaseReference rootRef = FirebaseDatabase.getInstance().getReferenceFromUrl("https://sleepsmarter-6f213-default-rtdb.firebaseio.com/");
-//
+
         //Finding the SleepSmarter User from the database that was selected.
         rootRef.child("users").orderByChild("FullName").equalTo(name).addValueEventListener(new ValueEventListener() {
             @Override
@@ -128,63 +128,67 @@ public class MySleep extends AppCompatActivity {
             }
         });
 
-        //Fetch users data
+        //Fetch users data -- DELETE ONCE WE TEST THAT ITS OK FETCHING FRM ARDUINO
+        // ####### DELETE FROM HERE ########
         ArrayList<Integer> x_axis = new ArrayList<>();
         ArrayList<Integer> y_axis = new ArrayList<>();
-        String phone = sharedPreferences.getString(patient_num, "");
-        rootRef.child("users").child(phone).child("HeartrateList").addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for(DataSnapshot childDataSnapshot : snapshot.getChildren()) {
-                    // Fetching only y_axis for heartrate graph
-                    y_axis.add(Integer.parseInt((String) childDataSnapshot.child("heartrate").getValue()));
-                }
+        String phone = sharedPreferences.getString(patient_num, ""); // KEEP THIS THOUGH
 
-            }
+        ArrayList<Integer> movement_axis = new ArrayList<>();
+        ArrayList<Integer> heartrate_axis = new ArrayList<>();
+        ArrayList<Integer> timestamp_axis = new ArrayList<>();
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-        rootRef.child("users").child(phone).child("TimestampList").addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for(DataSnapshot childDataSnapshot : snapshot.getChildren()) {
-                    // Fetching only x_axis timestamps for all graphs
-                    x_axis.add(Integer.parseInt((String) childDataSnapshot.child("timestamp").getValue()));
-                }
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-        ArrayList<Integer> test_axis = new ArrayList<>();
 
         //TESTING FETCHING FROM ARDUINO -- DELETE LATER
-//        rootRef.child("users").child("12").child("TimeStamp").addListenerForSingleValueEvent(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                for(DataSnapshot childDataSnapshot : snapshot.getChildren()) {
-//                    String key = childDataSnapshot.getKey();
-//                    Log.d("test:::::::  ", key);
-//                    test_axis.add( Integer.parseInt( (String) childDataSnapshot.getValue()));
-////                    y_axis.add(Integer.parseInt((String) childDataSnapshot.child("heartrate").getValue()));
-////                    Log.d("here ", "key: " + key + "test: " + test_axis   );
-//                }
-//
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError error) {
-//
-//            }
-//        });
-        // DELETE ENDS HERE
 
+        // HEARTRATE
+
+        rootRef.child("users").child(phone).child("HeartRate").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for(DataSnapshot childDataSnapshot : snapshot.getChildren()) {
+                    heartrate_axis.add(Integer.parseInt((String) childDataSnapshot.getValue()));
+                    Log.d("here ", "heartrate: " + heartrate_axis);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+        // MOVEMENT
+        rootRef.child("users").child(phone).child("AccelerationX").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for(DataSnapshot childDataSnapshot : snapshot.getChildren()) {
+                    movement_axis.add(Integer.parseInt((String) childDataSnapshot.getValue()));
+                    Log.d("here ", "accelerationX: " + movement_axis);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+        // TIMESTAMPS
+        rootRef.child("users").child(phone).child("TimeStamp").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for(DataSnapshot childDataSnapshot : snapshot.getChildren()) {
+                    timestamp_axis.add(Integer.parseInt((String) childDataSnapshot.getValue()));
+                    Log.d("here ", "accelerationX: " + timestamp_axis);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
 
         Handler handler = new Handler();
         int delay = 1000;
@@ -195,24 +199,43 @@ public class MySleep extends AppCompatActivity {
 
         handler.postDelayed(new Runnable(){
             public void run(){
-                if(!x_axis.isEmpty() && !y_axis.isEmpty())//checking if the data is loaded or not
+                if(!timestamp_axis.isEmpty() && !heartrate_axis.isEmpty())//checking if the data is loaded or not
                 {
                     //Graph is being generated here
                    ArrayList<Entry> data = new ArrayList<>();
+                   ArrayList<Entry> accelerationData = new ArrayList<>();
 
                    //Transform data into Entries so we can use MPAndroid for graphing
-                   for (int j=0; j<y_axis.size(); j++) {
-                       data.add(new Entry((float) x_axis.get(j), (float) y_axis.get(j)));
+                   for (int j=0; j<heartrate_axis.size(); j++) {
+                       data.add(new Entry((float) timestamp_axis.get(j), (float) heartrate_axis.get(j)));
+                       accelerationData.add(new Entry((float) timestamp_axis.get(j), (float) movement_axis.get(j)));
                    }
 
                     LineChart mpLineChart;
                     mpLineChart = findViewById(R.id.line_chart);
-                    LineDataSet lineDataSetHeartrate = new LineDataSet(data, "Heartrate Data");
+
+                    //Heartrate Dataset
+                    LineDataSet lineDataSetHeartrate = new LineDataSet(data, "Heartrate");
                     lineDataSetHeartrate.setLineWidth(5);
                     lineDataSetHeartrate.setCircleRadius(3);
                     lineDataSetHeartrate.setCircleHoleRadius(4);
-                    lineDataSetHeartrate.setMode(LineDataSet.Mode.CUBIC_BEZIER);
+                    lineDataSetHeartrate.setValueTextSize(10);
+                    lineDataSetHeartrate.setCircleColor(Color.rgb(127, 0, 225));
+                    lineDataSetHeartrate.setMode(LineDataSet.Mode.HORIZONTAL_BEZIER);
+                    lineDataSetHeartrate.setAxisDependency(YAxis.AxisDependency.LEFT);
 
+                    //Acceleration Dataset
+                    LineDataSet lineDataSetAcceleration = new LineDataSet(accelerationData, "Movement");
+                    lineDataSetAcceleration.setLineWidth(4);
+                    lineDataSetAcceleration.setCircleRadius(3);
+                    lineDataSetAcceleration.setCircleHoleRadius(4);
+                    lineDataSetAcceleration.setValueTextSize(10);
+                    lineDataSetAcceleration.setColor(Color.rgb(127, 0, 225));
+                    lineDataSetAcceleration.setMode(LineDataSet.Mode.CUBIC_BEZIER);
+                    lineDataSetAcceleration.enableDashedLine(10, 10 , 0);
+                    lineDataSetAcceleration.setAxisDependency(YAxis.AxisDependency.RIGHT);
+
+                    mpLineChart.getDescription().setText("Movement and Heartrate readings at time of sleep (hhmm)");
                     //use them to update text below graph and at patients tab
                     String max =  String.valueOf(lineDataSetHeartrate.getYMax());
                     String min = String.valueOf(lineDataSetHeartrate.getYMin());
@@ -221,6 +244,7 @@ public class MySleep extends AppCompatActivity {
 
                     ArrayList<ILineDataSet> dataSets = new ArrayList<>();
                     dataSets.add(lineDataSetHeartrate);
+                    dataSets.add(lineDataSetAcceleration);
 
                     LineData lineData = new LineData(dataSets);
                     mpLineChart.setData(lineData);
@@ -237,25 +261,6 @@ public class MySleep extends AppCompatActivity {
                     handler.postDelayed(this, delay);
             }
         }, delay);
-
-        //add dummy data -- DELETE LATER
-//        int i = 0;
-//        while (i < dummydata.length) {
-//            HeartrateData heartrateData = new HeartrateData(dummydata[i]);
-//            arrayList.add(heartrateData);
-//            i++;
-//        }
-//        rootRef.child("users").child(phone).child("HeartrateList").setValue(arrayList);
-//        //Now for timestamps
-//        i = 0;
-//        while (i < timedummydata.length) {
-//            TimeStamps timeStamps = new TimeStamps(timedummydata[i]);
-//            timeList.add(timeStamps);
-//            i++;
-//        }
-//        rootRef.child("users").child(phone).child("TimestampList").setValue(timeList);
-//        // DELETE TILL HERE
-
 
     }
 
