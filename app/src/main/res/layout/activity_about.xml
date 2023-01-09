@@ -7,16 +7,16 @@
     tools:context=".About">
 
     <TextView
-        android:layout_width="wrap_content"
         android:id="@+id/abouttag"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="10dp"
-        android:text="About"
         android:shadowColor="@color/text_shadow"
         android:shadowDx="1"
         android:shadowDy="2"
         android:shadowRadius="4"
+        android:text="About"
         android:textSize="30dp" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
@@ -31,14 +31,38 @@
 
         />
 
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="wrap_content"
+        android:layout_height="124dp"
+        android:layout_below="@+id/abouttag"
+        android:layout_alignStart="@+id/abouttag"
+        android:layout_alignEnd="@+id/abouttag"
+        android:layout_marginStart="-56dp"
+        android:layout_marginTop="-8dp"
+        android:layout_marginEnd="-57dp"
+        app:srcCompat="@drawable/logo_no_bg" />
+
     <TextView
         android:id="@+id/textView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/abouttag"
-        android:layout_marginTop="81dp"
-        android:layout_marginLeft="10dp"
-        android:textStyle="bold"
-        android:text="Please follow the steps below to use our prouct with ease:" />
+        android:layout_above="@+id/bottom_navigator"
+        android:layout_below="@+id/imageView"
+        android:layout_alignStart="@+id/imageView"
+        android:layout_alignEnd="@+id/imageView"
+        android:layout_marginStart="-94dp"
+        android:layout_marginTop="7dp"
+        android:layout_marginEnd="-92dp"
+        android:layout_marginBottom="7dp"
+        android:text="NOTE: It is not mandatory to use the app and it is only optional for personal use.\n \nIf you wish to not share your data with your personal doctor, you can click on the Remove Personal Doctor button located at the Settings tab.\n
+    \nThe Personal Doctors using this application, are only eligible to access the second tab from the bottom to check their patients data.
+    \n \n \n How to use SleepSmarter: \n \n 1) Put the wristband on before going to sleep\n
+\n2) You can adjust your preferences right before going to sleep from the docking station\n
+\n3) While sleeping, heartrate and movement are being tracked from the wristband\n
+\n4) the docking station will create by itself a comfortable and relaxing atmosphere with the use of sounds and aroma\n
+\n5) Once you wake up, put the wristband back on the docking station in order to charge it\n
+\n6) Then you can see your data from the app at the MySleep tab"
+        android:textStyle="bold" />
 
 </RelativeLayout>

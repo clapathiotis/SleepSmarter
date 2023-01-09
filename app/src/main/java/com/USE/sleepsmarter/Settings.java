@@ -40,23 +40,17 @@ public class Settings extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
-        Button updategp = findViewById(R.id.updatedpBtn);
+        Button removegpBtn = findViewById(R.id.updatedpBtn);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Update GP");
-        builder.setMessage("Please type your GP");
-        EditText input = new EditText(this);
-        builder.setView(input);
+        builder.setTitle("Stop Sharing Your Data With Your Personal Doctor");
+        builder.setMessage("If you want to share your data again, then call your doctor");
 
-        builder.setPositiveButton("Submit", new DialogInterface.OnClickListener() {
+        builder.setPositiveButton("Remove Doctor", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                String txt = input.getText().toString();
-                //Log.d("gp", "val + " + txt); works
-                HashMap hasmap = new HashMap();
-                hasmap.put("Personal_Doctor", txt);
                 DatabaseReference dbref = FirebaseDatabase.getInstance().getReferenceFromUrl("https://sleepsmarter-6f213-default-rtdb.firebaseio.com/").child("users");
-                
+                HashMap hasmap = new HashMap();
                 SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
                 String phone = sharedPreferences.getString("phoneval", "");
 
@@ -64,7 +58,16 @@ public class Settings extends AppCompatActivity {
                 dbref.child(phone).updateChildren(hasmap).addOnSuccessListener(new OnSuccessListener() {
                     @Override
                     public void onSuccess(Object o) {
-                        Toast.makeText(Settings.this, "GP updated", Toast.LENGTH_SHORT).show();
+                        hasmap.put("Personal_Doctor", " ");
+                        SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
+                    String phone = sharedPreferences.getString("phoneval", "");
+                    //get phone of user (unique) and update doctor
+                    dbref.child(phone).updateChildren(hasmap).addOnSuccessListener(new OnSuccessListener() {
+                    @Override
+                    public void onSuccess(Object o) {
+                        Toast.makeText(Settings.this, "Successfully removed from your Personal Doctor", Toast.LENGTH_SHORT).show();
+                    }
+                });
                     }
                 });
             }
@@ -77,7 +80,7 @@ public class Settings extends AppCompatActivity {
                 });
         AlertDialog ad = builder.create();
 
-        updategp.setOnClickListener(new View.OnClickListener() {
+        removegpBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 ad.show();
@@ -149,7 +152,7 @@ public class Settings extends AppCompatActivity {
 //            public void onClick(View view) {
 //                //remove doctor from DB
 //                HashMap hasmap = new HashMap();
-//                hasmap.put("Personal Doctor", null);
+//                hasmap.put("Personal_Doctor", " ");
 //                DatabaseReference dbref = FirebaseDatabase.getInstance().getReferenceFromUrl("https://sleepsmarter-6f213-default-rtdb.firebaseio.com/").child("users");
 //
 //                SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
@@ -158,7 +161,7 @@ public class Settings extends AppCompatActivity {
 //                dbref.child(phone).updateChildren(hasmap).addOnSuccessListener(new OnSuccessListener() {
 //                    @Override
 //                    public void onSuccess(Object o) {
-//                        Toast.makeText(Settings.this, "GP removed", Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(Settings.this, "Personal Doctor removed", Toast.LENGTH_SHORT).show();
 //                    }
 //                });
 //            }
