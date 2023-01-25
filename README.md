@@ -24,4 +24,4 @@ The app is meant to be used with the wristband created by the group in order to 
 - Developing machine learning algorithms to automatically identify and flag potential sleep disorders
 
 ## Contribution
-We welcome any contributions to the project, whether it is a bug report, feature request, or a pull request. 
+Any contributions to the project are welcome, whether it is a bug report, feature request, or a pull request. 
