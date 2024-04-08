@@ -25,3 +25,9 @@ The app is meant to be used with the wristband created by the group in order to 
 
 ## Contribution
 Any contributions to the project are welcome, whether it is a bug report, feature request, or a pull request. 
+
+## Demo images
+![doctorScreen](https://github.com/clapathiotis/SleepSmarter/assets/43289218/d61ebdb2-c9a5-46cf-8844-f68056f15d1c)
+![aboutScreen](https://github.com/clapathiotis/SleepSmarter/assets/43289218/19dfb021-cb26-4839-9091-795398589564)
+![fig3](https://github.com/clapathiotis/SleepSmarter/assets/43289218/97a80e63-dfa7-4ebd-a89c-6ef1836abf56)
+
